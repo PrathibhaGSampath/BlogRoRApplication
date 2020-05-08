@@ -8,6 +8,7 @@ class Post < ApplicationRecord
   validates_presence_of :title, :body
   validates_inclusion_of :status, :in => %w( Draft Published Archived)
   before_save :verify_draft_post, :validate_post_body, :update_word_count
+  after_create :send_mail_for_newly_published_posts
   DEFAULT_POST_STATUS = {"Draft": "Draft", "Published": "Published", "Archived": "Archived"}
 
 
@@ -35,6 +36,12 @@ class Post < ApplicationRecord
 
   def update_word_count
     self.word_count = Post.get_word_count(self.body)
+  end
+
+  def send_mail_for_newly_published_posts
+    if self.status == DEFAULT_POST_STATUS["Published"]
+      SentMailOnPostPublishedJob.perform_now(self.user_id, self.id)
+    end
   end
 
 end
