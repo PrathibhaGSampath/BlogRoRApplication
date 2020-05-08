@@ -39,6 +39,7 @@ gem 'nio4r', '2.0.0'
 
 gem 'devise'
 gem 'cancancan'
+gem 'sidekiq', '4.1.2'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

@@ -1,0 +1,16 @@
+<%= form_for @post do |comment| %>
+
+  <%= comment.label :title %>:
+  <%= comment.text_field :title %><br />
+
+  <%= comment.label :information %>:
+  <%= comment.text_area :body %><br />
+
+  <%= comment.label 'Status' %>:
+  <%= comment.label @post[:status] %><br />
+
+  <%= comment.submit 'Update'%>
+  <%= link_to 'Delete', @post, method: :delete  %>
+  <%= link_to 'Back', posts_path %>
+
+<% end %>

@@ -10,15 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200506142822) do
+ActiveRecord::Schema.define(version: 20200508120459) do
 
   create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "description",  limit: 100
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.string   "opinion_type"
-    t.integer  "opinion_id"
-    t.index ["opinion_type", "opinion_id"], name: "index_comments_on_opinion_type_and_opinion_id", using: :btree
+    t.integer  "post_id"
+    t.integer  "user_id"
+    t.integer  "word_count"
+    t.index ["opinion_type"], name: "index_comments_on_opinion_type_and_opinion_id", using: :btree
+    t.index ["post_id"], name: "index_comments_on_post_id", using: :btree
+    t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
   end
 
   create_table "posts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -28,6 +32,9 @@ ActiveRecord::Schema.define(version: 20200506142822) do
     t.integer  "user_id"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.integer  "word_count"
+    t.index ["id", "status"], name: "PIDStatus", using: :btree
+    t.index ["status"], name: "PStatus", using: :btree
     t.index ["user_id"], name: "index_posts_on_user_id", using: :btree
   end
 

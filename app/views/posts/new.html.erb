@@ -4,7 +4,11 @@
   <%= comment.text_field :title %><br />
 
   <%= comment.label :information %>:
-  <%= comment.text_field :body %><br />
+  <%= comment.text_area :body %><br />
 
-  <%= comment.submit %>
+  <%= comment.label 'What should we do with this new post' %>
+  <%= comment.select :status, @available_status %><br />
+
+  <%= comment.submit 'Save'%>
+<%= link_to 'Back', posts_path %>
 <% end %>

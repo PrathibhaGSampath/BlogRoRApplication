@@ -1,16 +1,18 @@
 module TextValidation
   extend ActiveSupport::Concern
 
-  def check_wrong_words(text)
-    wrong_words =  ["bad", "poor", "stupid", "fiilty", "dirty"]
-    text_chuncks = text.split(" ") if text.present?
+  def contains_wrong_words?(text)
+    wrong_words =  ["bad", "poor", "stupid", "filty", "dirty"]
+    result = nil
     wrong_words.each do |wrong_word|
-        if text_chuncks.include? (wrong_word)
+        if text.include? (wrong_word)
           return true
         else
-          return false
+          next
+          result = false
         end
     end
+    return result
   end
 
   module ClassMethods
@@ -18,6 +20,12 @@ module TextValidation
       vowels_count = 0
       vowels_count = text.count("aAeEoOuUiI") if text.present?
       return vowels_count
+    end
+
+    def get_word_count(text)
+      text_chuncks = []
+      text_chuncks = text.split(" ") if text.present?
+      return text_chuncks.count
     end
   end
 

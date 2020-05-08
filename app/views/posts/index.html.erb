@@ -1,23 +1,104 @@
-<%= link_to 'Create New Post' , new_post_path%>
+<%= link_to 'Create New Post', new_post_path%>
 
-<% if @posts.present? %>
-  <table>
-    <thead>
-    <th> Title </th>
-    <th> Information </th>
-    <th> Actions </th>
-    </thead>
-    <tbody>
-    <% @posts.each do |post| %>
-      <tr>
-        <td><%= post.title %></td>
-        <td><%= post.body %></td>
-        <td> <%= link_to 'Add Comments' %></td>
-        <td> <%= link_to 'Edit' %></td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-<% else %>
+<% if (!@draft_posts.present? && !@published_posts.present? && !@archived_posts.present?) %>
   <h1> No Posts Available for this User</h1>
+<% else %>
+  <div>
+    <% if @draft_posts.present? %>
+      <h2> Draft Post </h2>
+      <table>
+        <thead>
+        <th> Title </th>
+        <th> Information </th>
+        <th> Actions </th>
+        </thead>
+        <tbody>
+        <% @draft_posts.each do |post| %>
+          <tr>
+            <td><%= post.title %></td>
+            <td><%= post.body %></td>
+            <td> <%= link_to 'Edit', edit_post_path(id: post.id) %>
+              <%= link_to 'Delete', post, method: :delete %>
+            </td>
+            <td> <%= link_to 'Publish', activate_post_path(id: post.id), method: :patch %></td>
+            <td> <%= link_to 'Archive', archive_post_path(id: post.id), method: :patch %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+
+  <div>
+    <% if @published_posts.present? %>
+      <h2> Published Post </h2>
+      <table>
+        <thead>
+        <th> Title </th>
+        <th> Information </th>
+        <th> Comments </th>
+        <th> Comments Actions </th>
+        <th> Posts Actions </th>
+        </thead>
+        <tbody>
+        <% @published_posts.each do |post| %>
+          <tr>
+            <td><%= post.title %></td>
+            <td><%= post.body %></td>
+            <td><table> <tbody>
+                <% if post.comments.present? %>
+                  <% post.comments.each do |comment| %>
+                    <tr> <td> <%= comment.description %> </td>
+                      <td> <%= link_to 'Edit Comment',  edit_post_comment_path(id: comment.id, post_id: post.id) %> </td>
+                      <td> <%= link_to 'Delete Comment',  comment_path(id: comment.id), method: :delete %> </td>
+                    </tr>
+                  <% end %>
+                <% end %>
+                </tbody></table>
+            </td>
+            <td> <%= link_to 'Add Comments', new_post_comment_path(post_id: post.id) %></td>
+            <td> <%= link_to 'Edit', edit_post_path(id: post.id) %>
+              <%= link_to 'Delete', post, method: :delete %>
+            </td>
+            <td> <%= link_to 'Archive', archive_post_path(id: post.id), method: :patch %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+
+  <div>
+    <% if @archived_posts.present? %>
+      <h2> Archived Post </h2>
+      <table>
+        <th> Title </th>
+        <th> Information </th>
+        <th> Comments </th>
+        <th> Posts Actions </th>
+        </thead>
+        <tbody>
+        <% @archived_posts.each do |post| %>
+          <tr>
+            <td><%= post.title %></td>
+            <td><%= post.body %></td>
+            <td><table> <tbody>
+            <% if post.comments.present? %>
+              <% post.comments.each do |comment| %>
+                <tr> <%= comment.description %> </tr>
+              <% end %>
+            <% end %>
+            </tbody></table>
+            </td>
+            <td> <%= link_to 'Edit', edit_post_path(id: post.id) %>
+              <%= link_to 'Delete', post, method: :delete %>
+            </td>
+            <td> <%= link_to 'Publish', activate_post_path(id: post.id), method: :patch %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
 <% end %>
+
