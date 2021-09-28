@@ -33,7 +33,7 @@ gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 gem 'i18n', '1.0.0'
-gem 'nokogiri', '1.9.1'
+gem 'nokogiri', '1.12.5'
 gem 'rack', '2.0.1'
 gem 'nio4r', '2.0.0'
 
